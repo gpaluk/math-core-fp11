@@ -449,7 +449,7 @@ package io.plugin.math.algebra
 		public function normalize( epsilon: Number = 1e-8 ): Number
 		{
 			var length: Number = getLength();
-			if ( length < epsilon )
+			if ( length > epsilon )
 			{
 				var invLength: Number = 1 / length;
 				w *= invLength;
@@ -538,7 +538,6 @@ package io.plugin.math.algebra
 			var cs: Number = p.dotProduct( q );
 			var angle: Number = Math.acos( cs );
 			
-			trace( angle );
 			if ( Math.abs( angle ) > 0 )
 			{
 				var sn: Number = Math.sin( angle );

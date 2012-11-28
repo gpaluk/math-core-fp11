@@ -230,7 +230,7 @@ package io.plugin.math.algebra
 		{
 			m03 += v.x;
 			m13 += v.y;
-			m33 += v.z;
+			m23 += v.z;
 			
 			return this;
 		}
