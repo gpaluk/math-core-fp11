@@ -72,6 +72,18 @@ package io.plugin.math.algebra
 		}
 		
 		/**
+		 * Creates a new <code>APoint</code> object from an array.
+		 * 
+		 * @param	tuple	The values to instanciate the new <code>APoint</code> object.
+		 * 
+		 * @return The new <code>APoint</code> object.
+		 */
+		public static function fromTuple( tuple: Array ): APoint
+		{
+			return new APoint( tuple[ 0 ], tuple[ 1 ], tuple[ 2 ] );
+		}
+		
+		/**
 		 * An affine point represents a point (x,y,z,1) in the three-dimensional space using the Cartesian coordinates x, y, and z. If you do not specify 
 		 * a parameter for the constructor, an <code>APoint</code> Object is created with the elements (0,0,0,1).
 		 * 
