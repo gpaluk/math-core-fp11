@@ -125,10 +125,10 @@ package io.plugin.math.algebra
 		public function toVector(): Vector.<Number>
 		{
 			var v: Vector.<Number> = new Vector.<Number>( 4, true );
-			v[ 0 ] = x;
-			v[ 1 ] = y;
-			v[ 2 ] = z;
-			v[ 3 ] = w;
+			v[ 0 ] = w;
+			v[ 1 ] = x;
+			v[ 2 ] = y;
+			v[ 3 ] = z;
 			return v;
 		}
 		
