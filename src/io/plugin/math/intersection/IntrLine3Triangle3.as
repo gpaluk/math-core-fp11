@@ -24,6 +24,11 @@ package io.plugin.math.intersection
 		{
 			_line = rkLine;
 			_triangle = rkTriangle;
+			
+			_lineParameter = 0;
+			_triBary0 = 0;
+			_triBary1 = 0;
+			_triBary2 = 0;
 		}
 		
 		[Inline]

@@ -383,11 +383,11 @@ package io.plugin.math.algebra
 		 */
 		public function equals( p: Object ): Boolean
 		{
-			if ( !(p is APoint ) )
+			if ( p is APoint )
 			{
-				throw new Error( "An error occured in AVector::equals(). Object type mismatch." );
+				return ( x == p.x && y == p.y && z == p.z );
 			}
-			return ( x == p.x && y == p.y && z == p.z );
+			return false;
 		}
 		
 		/**

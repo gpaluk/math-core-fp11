@@ -254,6 +254,7 @@ package io.plugin.math.algebra
 		 * @param	v	The <code>AVector</code> to translate the <code>HMatrix</code> Object by.
 		 * @return	A new <code>HMatrix</code> Object with the appended translation applied.
 		 */
+		/*
 		public function translateAVector( v: AVector ): HMatrix
 		{
 			return new HMatrix( m00, m01, m02, m03 + v.x,
@@ -261,6 +262,7 @@ package io.plugin.math.algebra
 								m20, m21, m22, m23 + v.z,
 								m30, m31, m32, m33 );
 		}
+		*/
 		
 		/**
 		 * Translates the <code>HMatrix</code> Object by an <code>AVector</code> Objects and assign the result to <code>this</code> Object.
@@ -268,6 +270,7 @@ package io.plugin.math.algebra
 		 * @param	v	The <code>AVector</code> to translate the <code>HMatrix</code> Object by. 
 		 * @return	<code>this</code> Object with the appended translation applied.
 		 */
+		/*
 		public function translateAVectorEq( v: AVector ): HMatrix
 		{
 			m03 += v.x;
@@ -276,6 +279,7 @@ package io.plugin.math.algebra
 			
 			return this;
 		}
+		*/
 		
 		/**
 		 * Creates and return an <code>Vector</code> containing the 16 elements of this <code>HMatrix</code> object.
@@ -335,15 +339,14 @@ package io.plugin.math.algebra
 		 */
 		public function equals( m: Object ): Boolean
 		{
-			if ( !( m is HMatrix ) )
+			if ( m is HMatrix )
 			{
-				throw new Error( "An error occured in HMatrix::equals(). Object type mismatch." );
+				return ( m00 == m.m00 && m01 == m.m01 && m02 == m.m02 && m03 == m.m03 &&
+						 m10 == m.m10 && m11 == m.m11 && m12 == m.m12 && m13 == m.m13 &&
+						 m20 == m.m20 && m21 == m.m21 && m22 == m.m22 && m23 == m.m23 &&
+						 m30 == m.m30 && m31 == m.m31 && m32 == m.m32 && m33 == m.m33 );
 			}
-			
-			return ( m00 == m.m00 && m01 == m.m01 && m02 == m.m02 && m03 == m.m03 &&
-					 m10 == m.m10 && m11 == m.m11 && m12 == m.m12 && m13 == m.m13 &&
-					 m20 == m.m20 && m21 == m.m21 && m22 == m.m22 && m23 == m.m23 &&
-					 m30 == m.m30 && m31 == m.m31 && m32 == m.m32 && m33 == m.m33 );
+			return false;
 		}
 		
 		/**
