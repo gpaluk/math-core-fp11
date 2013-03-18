@@ -4,7 +4,7 @@ math-core-fp11
 Plugin.IO Math Core Library
 ===========================
 
-The Plugin.IO math core library provides a set of classes that can be used for performing algebraic and geometric functions. This library focusus in the areas of computational geometry. 
+The Plugin.IO math core library provides a set of classes that can be used for performing algebraic and geometric functions. This library focuses in the areas of computational geometry. 
 
 
 
@@ -17,8 +17,9 @@ The Plugin.IO math package is written in ActionScript 3 and provides greater fun
 * [Homogeneous Space - wikipedia article](http://en.wikipedia.org/wiki/Homogeneous_space/ "Homogeneous space on wikipedia")
 
 
-The Plugin.IO math library is designed to be very fast but due to the extra functionality, objects have a slightly heavier memory footprint. As with any library, if you are creating and disposing of many objects, we recommend using an object pool.
+The Plugin.IO math library is designed to be very fast but due to the extra functionality, objects have a slightly heavier memory footprint. As with any library, if you are creating and disposing of many objects, we recommend using an object pool. This Math library supports inlining which can be used for optimizing the execution speed when compiled using Adobes ASC 2.0 compiler.
 
+* [ASC 2.0 compiler at ByteArray.org](http://www.bytearray.org/?p=4789/ "ASC 2.0 compiler at ByteArray.org")
 
 
 Unit Tests
