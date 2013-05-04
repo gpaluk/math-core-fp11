@@ -37,7 +37,7 @@ package io.plugin.math.algebra
 		public var y: Number;
 		
 		/**
-		 * The second element of an <code>AVector</code> Object, such as the <code>y</code> coordinate of a point in the three-dimensional space.
+		 * The second element of an <code>AVector</code> Object, such as the <code>z</code> coordinate of a point in the three-dimensional space.
 		 */
 		public var z: Number;
 		
@@ -73,6 +73,12 @@ package io.plugin.math.algebra
 			_w = 0;
 			
 			mIsDisposed = false;
+			
+		}
+		
+		public static function fromTuple( tuple: Array ): AVector
+		{
+			return new AVector( tuple[ 0 ], tuple[ 1 ], tuple[ 2 ] );
 		}
 		
 		/**
@@ -88,7 +94,6 @@ package io.plugin.math.algebra
 		 */
 		public function dispose(): void
 		{
-			
 			mIsDisposed = true;
 		}
 		
@@ -289,7 +294,8 @@ package io.plugin.math.algebra
 		 * 
 		 * @return	The length of the <code>AVector</code>.
 		 */
-		public function getLength(): Number
+		[Inline]
+		public final function get length(): Number
 		{
 			return Math.sqrt( x * x + y * y + z * z );
 		}
@@ -301,7 +307,7 @@ package io.plugin.math.algebra
 		 * 
 		 * @return	The squared length of the <code>AVector</code> Object.
 		 */
-		public function getSquaredLength(): Number
+		public function get squaredLength(): Number
 		{
 			return x * x + y * y + z * z;
 		}
@@ -326,24 +332,24 @@ package io.plugin.math.algebra
 		 */
 		public function normalize( epsilon: Number = 1e-8 ): Number
 		{
-			var length: Number = getLength();
+			var len: Number = length;
 			
-			if ( length > epsilon )
+			if ( len > epsilon )
 			{
-				var invLength: Number = 1 / length;
+				var invLength: Number = 1 / len;
 				x *= invLength;
 				y *= invLength;
 				z *= invLength;
 			}
 			else
 			{
-				length = 0;
+				len = 0;
 				x = 0;
 				y = 0;
 				z = 0;
 			}
 			
-			return length;
+			return len;
 		}
 		
 		/**
@@ -390,7 +396,7 @@ package io.plugin.math.algebra
 		{
 			if ( !(v is AVector ) )
 			{
-				throw new Error( "An error occured in AVector::equals(). Objetct type mismatch." );
+				return false;
 			}
 			return ( x == v.x && y == v.y && z == v.z );
 		}
@@ -477,6 +483,42 @@ package io.plugin.math.algebra
 		}
 		
 		// TODO consider to add following methods: generateOrthonormalBasis, generateComplementBasis 
+		
+		public static function generateOrthonormalBasis( v0: AVector, v1: AVector, v2: AVector ): void
+		{
+			v2.normalize();
+			generateComplementBasis( v0, v1, v2 );
+		}
+		
+		public static function generateComplementBasis( v0: AVector, v1: AVector, v2: AVector ): void
+		{
+			var invLength: Number;
+			
+			if ( Math.abs( v2.x ) >= Math.abs( v2.y ) )
+			{
+				invLength = 1 / Math.sqrt( v2.x * v2.x + v2.z * v2.z );
+				
+				v0.x = -v2.z * invLength;
+				v0.y = 0;
+				v0.z = v2.x * invLength;
+				
+				v1.x = v2.y * v0.z;
+				v1.y = v2.z * v0.x - v2.x * v0.z;
+				v1.z = -v2.y * v0.x;
+			}
+			else
+			{
+				invLength = 1 / Math.sqrt( v2.y * v2.y + v2.z * v2.z );
+				
+				v0.x = 0;
+				v0.y = v2.z * invLength;
+				v0.z = -v2.y * invLength;
+				
+				v1.x = v2.y * v0.z - v2.z * v0.y;
+				v1.y = -v2.x * v0.z;
+				v1.z = v2.x * v0.y;
+			}
+		}
 		
 		/**
 		 * Returns a <code>String</code> representation of the object.

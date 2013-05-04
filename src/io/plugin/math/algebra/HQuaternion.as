@@ -125,10 +125,10 @@ package io.plugin.math.algebra
 		public function toVector(): Vector.<Number>
 		{
 			var v: Vector.<Number> = new Vector.<Number>( 4, true );
-			v[ 0 ] = x;
-			v[ 1 ] = y;
-			v[ 2 ] = z;
-			v[ 3 ] = w;
+			v[ 0 ] = w;
+			v[ 1 ] = x;
+			v[ 2 ] = y;
+			v[ 3 ] = z;
 			return v;
 		}
 		
@@ -330,19 +330,90 @@ package io.plugin.math.algebra
 			return this;
 		}
 		
-		/*
+		[Inline]
+		private final function sign( value: Number ): Number
+		{
+			return( value > 0 ? 1 : -1 );
+		}
+		
+		[Inline]
+		private final function norm( a: Number, b: Number, c: Number, d: Number ): Number
+		{
+			return Math.sqrt( a * a + b * b + c * c + d * d);
+		}
+		
 		public function fromRotationMatrix( rot: HMatrix ): void
 		{
-			// TODO implement fromRotationMatrix()
+			// TODO serious test this stuff + pointer optimizations
+			var q0: Number = ( rot.m00 + rot.m11 + rot.m22 + 1 ) / 4;
+			var q1: Number = ( rot.m00 - rot.m11 - rot.m22 + 1 ) / 4;
+			var q2: Number = (-rot.m00 + rot.m11 - rot.m22 + 1 ) / 4;
+			var q3: Number = (-rot.m00 - rot.m11 + rot.m22 + 1 ) / 4;
+			
+			if ( q0 < 0 )
+			{
+				q0 =  0;
+			}
+			if ( q1 < 0 )
+			{
+				q1 =  0;
+			}
+			if ( q2 < 0 )
+			{
+				q2 =  0;
+			}
+			if ( q3 < 0 )
+			{
+				q3 =  0;
+			}
+			
+			q0 = Math.sqrt( q0 );
+			q1 = Math.sqrt( q1 );
+			q2 = Math.sqrt( q2 );
+			q3 = Math.sqrt( q3 );
+			
+			if ( q0 >= q1 && q0 >= q2 && q0 >= q3 )
+			{
+				q1 *= sign( rot.m21 - rot.m12 );
+				q2 *= sign( rot.m02 - rot.m20 );
+				q3 *= sign( rot.m10 - rot.m01 );
+			}
+			else if( q1 >= q0 && q1 >= q2 && q1 >= q3 )
+			{
+				q0 *= sign( rot.m21 - rot.m12 );
+				q2 *= sign( rot.m10 + rot.m01 );
+				q3 *= sign( rot.m02 + rot.m20 );
+			}
+			else if ( q2 >= q0 && q2 >= q1 && q2 >= q3 )
+			{
+				q0 *= sign( rot.m02 - rot.m20 );
+				q1 *= sign( rot.m10 + rot.m01 );
+				q3 *= sign( rot.m21 + rot.m12 );
+			}
+			else if ( q3 >= q0 && q3 >= q1 && q3 >= q2 )
+			{
+				q0 *= sign( rot.m10 - rot.m01 );
+				q1 *= sign( rot.m20 + rot.m02 );
+				q2 *= sign( rot.m21 + rot.m12 );
+			}
+			else
+			{
+				throw new Error( "Invalid value." );
+			}
+			var r: Number = norm( q0, q1, q2, q3 );
+			
+			w = q0 /= r;
+			x = q1 /= r;
+			y = q2 /= r;
+			z = q3 /= r;
 		}
-		*/
 		
 		/**
 		 * Calculates a rotation matrix from the quarternion values.
 		 * 
 		 * @return	A new <code>HMatrix</code> Object rotation representation of the <code>HQuaternion</code> Object.
 		 */
-		public function toRotationMatrix(): HMatrix
+		public function toRotationMatrix( ): HMatrix
 		{
 			var twoX: Number = 2 * x;
 			var twoY: Number = 2 * y;
@@ -356,12 +427,12 @@ package io.plugin.math.algebra
 			var twoXY: Number = twoY * x;
 			var twoXZ: Number = twoZ * x;
 			
-			var twoYX: Number = twoX * y;
+			//var twoYX: Number = twoX * y;
 			var twoYY: Number = twoY * y;
 			var twoYZ: Number = twoZ * y;
 			
-			var twoZX: Number = twoX * z;
-			var twoZY: Number = twoY * z;
+			//var twoZX: Number = twoX * z;
+			//var twoZY: Number = twoY * z;
 			var twoZZ: Number = twoZ * z;
 			
 			return new HMatrix( 1 - (twoYY + twoZZ),
@@ -436,7 +507,7 @@ package io.plugin.math.algebra
 		 */
 		public function dotProduct( q: HQuaternion ): Number
 		{
-			return  w * q.w, x * q.x, y * q.y, z * q.z;
+			return  w * q.w + x * q.x + y * q.y + z * q.z;
 		}
 		
 		/**

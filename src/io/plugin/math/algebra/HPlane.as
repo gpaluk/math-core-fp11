@@ -49,6 +49,27 @@ package io.plugin.math.algebra
 		}
 		
 		/**
+		 * Creates and returns a new <code>HPlane</code> object from 3 <code>HPlane</code> objects.
+		 * 
+		 * @param	p0	The first APoint.
+		 * @param	p1	The second APoint.
+		 * @param	p2	The third APoint.
+		 * 
+		 * @return	The resulting <code>HPlane</code> object.
+		 */
+		public static function fromAPoints( p0: APoint, p1: APoint, p2: APoint ): HPlane
+		{
+			
+			var edge1: AVector = p1.subtract( p0 );
+			var edge2: AVector = p2.subtract( p0 );
+			var normal: AVector = edge1.unitCrossProduct( edge2 );
+			
+			var constant: Number = -p0.dotProduct( normal );
+			
+			return new HPlane( normal, constant );
+		}
+		
+		/**
 		 * Gets a <code>Boolean</code> indicating if the <code>dispose()</code> method has been called and subsequently sets the isDisposed property to <code>true</code>.
 		 */
 		public function get isDisposed(): Boolean
@@ -116,7 +137,8 @@ package io.plugin.math.algebra
 		 * 
 		 * @return	The normal of the <code>HPlane</code> Object.
 		 */
-		public function getNormal(): AVector
+		[Inline]
+		public final function get normal(): AVector
 		{
 			return mNormal;
 		}
@@ -126,7 +148,8 @@ package io.plugin.math.algebra
 		 * 
 		 * @param	normal	A normal to define the direction on the <code>Hplane</code> Object.
 		 */
-		public function setNormal( normal: AVector ): void
+		[Inline]
+		public final function set normal( normal: AVector ): void
 		{
 			mNormal = normal;
 		}
@@ -136,7 +159,8 @@ package io.plugin.math.algebra
 		 * 
 		 * @return	The <code>Number</code> constant of the <code>HPlane</code> Object.
 		 */
-		public function getConstant(): Number
+		[Inline]
+		public final function get constant(): Number
 		{
 			return mConstant;
 		}
@@ -146,7 +170,8 @@ package io.plugin.math.algebra
 		 * 
 		 * @param	constant	The <code>Number</code> constant of the <code>HPlane</code> Object.
 		 */
-		public function setConstant( constant: Number ): void
+		[Inline]
+		public final function set constant( constant: Number ): void
 		{
 			mConstant = -constant;
 		}

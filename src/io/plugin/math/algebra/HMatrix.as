@@ -175,6 +175,48 @@ package io.plugin.math.algebra
 		}
 		
 		/**
+		 * Creates a matrix from a set of tuples.
+		 * 
+		 * @param	tuple0	The first tuple.
+		 * @param	tuple1	The second tuple.
+		 * @param	tuple2	The third tuple.
+		 * @param	tuple3	The fourth tuple.
+		 * @param	columns	A boolean that indicates if the matrix is column or row major.
+		 * 
+		 * @return	The resulting <code>HMatrix</code> object.
+		 */
+		public static function fromTuple( tuple0: Array, tuple1: Array, tuple2: Array, tuple3: Array, columns: Boolean ): HMatrix
+		{
+			var matrix: HMatrix;
+			
+			if( columns )
+			{
+				matrix = new HMatrix (
+						tuple0[ 0 ], tuple1[ 0 ], tuple2[ 0 ], tuple3[ 0 ],
+						tuple0[ 1 ], tuple1[ 1 ], tuple2[ 1 ], tuple3[ 1 ],
+						tuple0[ 2 ], tuple1[ 2 ], tuple2[ 2 ], tuple3[ 2 ],
+						tuple0[ 3 ], tuple1[ 3 ], tuple2[ 3 ], tuple3[ 3 ]
+					)
+			}
+			else
+			{
+				matrix = new HMatrix (
+						tuple0[ 0 ], tuple0[ 1 ], tuple0[ 2 ], tuple0[ 3 ],
+						tuple1[ 0 ], tuple1[ 1 ], tuple1[ 2 ], tuple1[ 3 ],
+						tuple2[ 0 ], tuple2[ 1 ], tuple2[ 2 ], tuple2[ 3 ],
+						tuple3[ 0 ], tuple3[ 1 ], tuple3[ 2 ], tuple3[ 3 ]
+					)
+			}
+			return matrix;
+		}
+		
+		public static function fromAxisAngle( axis: AVector, angle: Number ): HMatrix
+		{
+			return new HMatrix().rotation( axis, angle );
+		}
+		
+		
+		/**
 		 * Gets a <code>Boolean</code> indicating if the <code>dispose()</code> method has been called and subsequently sets the isDisposed property to <code>true</code>.
 		 */
 		public function get isDisposed(): Boolean
@@ -435,10 +477,10 @@ package io.plugin.math.algebra
 		 */
 		public function scale( scaler: Number ): HMatrix
 		{
-			return new HMatrix( m00 = scaler,		m01 = scaler,		m02 = scaler,		m03 = scaler,
-								m10 = scaler,		m11 = scaler,		m12 = scaler,		m13 = scaler,
-								m20 = scaler,		m21 = scaler,		m22 = scaler,		m23 = scaler,
-								m30 = scaler,		m31 = scaler,		m32 = scaler,		m33 = scaler );
+			return new HMatrix( m00 *= scaler,		m01 *= scaler,		m02 *= scaler,		m03 *= scaler,
+								m10 *= scaler,		m11 *= scaler,		m12 *= scaler,		m13 *= scaler,
+								m20 *= scaler,		m21 *= scaler,		m22 *= scaler,		m23 *= scaler,
+								m30 *= scaler,		m31 *= scaler,		m32 *= scaler,		m33 *= scaler );
 		}
 		
 		/**
@@ -719,6 +761,90 @@ package io.plugin.math.algebra
 								m03, m13, m23, m33 );
 		}
 		
+		public function transposeTimes( mat: HMatrix ): HMatrix
+		{
+			return new HMatrix(
+				m00 * mat.m00 +
+				m10 * mat.m10 +
+				m20 * mat.m20 +
+				m30 * mat.m30,
+				
+				m00 * mat.m01 +
+				m10 * mat.m11 +
+				m20 * mat.m21 +
+				m30 * mat.m31,
+				
+				m00 * mat.m02 +
+				m10 * mat.m12 +
+				m20 * mat.m22 +
+				m30 * mat.m32,
+				
+				m00 * mat.m03 +
+				m10 * mat.m13 +
+				m20 * mat.m23 +
+				m30 * mat.m33,
+				
+				m01 * mat.m00 +
+				m11 * mat.m10 +
+				m21 * mat.m20 +
+				m31 * mat.m30,
+				
+				m01 * mat.m01 +
+				m11 * mat.m11 +
+				m21 * mat.m21 +
+				m31 * mat.m31,
+				
+				m01 * mat.m02 +
+				m11 * mat.m12 +
+				m21 * mat.m22 +
+				m31 * mat.m32,
+				
+				m01 * mat.m03 +
+				m11 * mat.m13 +
+				m21 * mat.m23 +
+				m31 * mat.m33,
+				
+				m02 * mat.m00 +
+				m12 * mat.m10 +
+				m22 * mat.m20 +
+				m32 * mat.m30,
+				
+				m02 * mat.m01 +
+				m12 * mat.m11 +
+				m22 * mat.m21 +
+				m32 * mat.m31,
+				
+				m02 * mat.m02 +
+				m12 * mat.m12 +
+				m22 * mat.m22 +
+				m32 * mat.m32,
+				
+				m02 * mat.m03 +
+				m12 * mat.m13 +
+				m22 * mat.m23 +
+				m32 * mat.m33,
+				
+				m03 * mat.m00 +
+				m13 * mat.m10 +
+				m23 * mat.m20 +
+				m33 * mat.m30,
+				
+				m03 * mat.m01 +
+				m13 * mat.m11 +
+				m23 * mat.m21 +
+				m33 * mat.m31,
+				
+				m03 * mat.m02 +
+				m13 * mat.m12 +
+				m23 * mat.m22 +
+				m33 * mat.m32,
+				
+				m03 * mat.m03 +
+				m13 * mat.m13 +
+				m23 * mat.m23 +
+				m33 * mat.m33 );
+		}
+		
 		/**
 		 * A new inverse representation of <code>this</code> Object.
 		 * 
@@ -813,7 +939,43 @@ package io.plugin.math.algebra
 		
 		// TODO implement transposeTimesTranspose()
 		
-		// TODO implement orthonormalize()
+		public function orthonormalize(): HMatrix
+		{
+			
+			var invLength: Number = 1 / Math.sqrt( m00 * m00 + m10 * m10 + m20 * m20 );
+			
+			m00 *= invLength;
+			m10 *= invLength;
+			m20 *= invLength;
+			
+			var dot0: Number = m00 * m01 + m10 * m11 + m20 * m21;
+			
+			m01 -= dot0 * m00;
+			m11 -= dot0 * m10;
+			m21 -= dot0 * m20;
+			
+			invLength = 1 / Math.sqrt( m01 * m01 + m11 * m11 + m21 * m21 );
+			
+			m01 *= invLength;
+			m11 *= invLength;
+			m21 *= invLength;
+			
+			var dot1: Number = m01 * m02 + m11 * m12 + m21 * m22;
+			
+			dot0 = m00 * m02 + m10 * m12 + m20 * m22;
+			
+			m02 -= dot0 * m00 + dot1 * m01;
+			m12 -= dot0 * m10 + dot1 * m11;
+			m22 -= dot0 * m20 + dot1 * m21;
+			
+			invLength = 1 / Math.sqrt( m02 * m02 + m12 * m12 + m22 * m22 );
+			
+			m02 *= invLength;
+			m12 *= invLength;
+			m22 *= invLength;
+			
+			return this;
+		}
 		
 		public function timesDiagonal( p: APoint ): HMatrix
 		{
@@ -826,8 +988,8 @@ package io.plugin.math.algebra
 		public function diagonalTimes( p: APoint ): HMatrix
 		{
 			return new HMatrix ( p.x * m00, p.x * m01, p.x * m02, m03,
-								 p.x * m10, p.x * m11, p.x * m12, m13,
-								 p.x * m20, p.x * m21, p.x * m22, m23,
+								 p.y * m10, p.y * m11, p.y * m12, m13,
+								 p.z * m20, p.z * m21, p.z * m22, m23,
 								 m30, m31, m32, m33 );
 		}
 		
@@ -922,6 +1084,38 @@ package io.plugin.math.algebra
 			m33 = eye.dotProduct( normal );
 			
 			return this;
+		}
+		
+		/**
+		 * Sets the elements of this <code>HMatrix</code> to an perspective projection matrix.
+		 * 
+		 * @param	origin	The reflection origin
+		 * @param	normal	The normal vector
+		 */
+		public function reflection( origin: APoint, normal: AVector ): void
+		{
+			var twoDotNO: Number = 2 * origin.dotProduct( normal );
+			
+			m00 = 1 - 2 * normal.x * normal.x;
+			m01 = -2 * normal.x * normal.y;
+			m02 = -2 * normal.x * normal.z;
+			m03 = twoDotNO * normal.x;
+			
+			m10 = -2 * normal.y * normal.x;
+			m11 = 1 - 2 * normal.y * normal.y;
+			m12 = -2 * normal.y * normal.z;
+			m13 = twoDotNO * normal.y;
+			
+			m20 = -2 * normal.z * normal.x;
+			m21 = -2 * normal.z * normal.y;
+			m22 = 1 - 2 * normal.z * normal.z;
+			m23 = twoDotNO * normal.z;
+			
+			m30 = 0;
+			m31 = 0;
+			m32 = 0;
+			m33 = 1;
+			
 		}
 		
 		/**

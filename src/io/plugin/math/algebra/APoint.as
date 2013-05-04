@@ -51,11 +51,6 @@ package io.plugin.math.algebra
 		}
 		
 		/**
-		 * Disposed flag.
-		 */
-		protected var _isDisposed: Boolean;
-		
-		/**
 		 * Creates and returns a new <code>APoint</code> object the represents an origin value at x=0, y=0, z=0.
 		 */
 		public static function get ORIGIN(): APoint
@@ -72,6 +67,18 @@ package io.plugin.math.algebra
 		}
 		
 		/**
+		 * Creates a new <code>APoint</code> object from an array.
+		 * 
+		 * @param	tuple	The values to instanciate the new <code>APoint</code> object.
+		 * 
+		 * @return The new <code>APoint</code> object.
+		 */
+		public static function fromTuple( tuple: Array ): APoint
+		{
+			return new APoint( tuple[ 0 ], tuple[ 1 ], tuple[ 2 ] );
+		}
+		
+		/**
 		 * An affine point represents a point (x,y,z,1) in the three-dimensional space using the Cartesian coordinates x, y, and z. If you do not specify 
 		 * a parameter for the constructor, an <code>APoint</code> Object is created with the elements (0,0,0,1).
 		 * 
@@ -85,17 +92,6 @@ package io.plugin.math.algebra
 			this.y = y;
 			this.z = z;
 			_w = 1;
-			
-			_isDisposed = false;
-		}
-		
-		/**
-		 * Gets a <code>Boolean</code> indicating if the <code>dispose()</code> method has been called and subsequently sets the isDisposed property to <code>true</code>.
-		 */
-		public function get isDisposed(): Boolean
-		{
-			
-			return _isDisposed;
 		}
 		
 		/**
@@ -104,7 +100,6 @@ package io.plugin.math.algebra
 		public function dispose(): void
 		{
 			
-			_isDisposed = true;
 		}
 		
 		/**
