@@ -34,14 +34,10 @@ package io.plugin.math.intersection
 		{
 			_line = rkLine;
 			_triangle = rkTriangle;
-<<<<<<< HEAD
-=======
-			
 			_lineParameter = 0;
 			_triBary0 = 0;
 			_triBary1 = 0;
 			_triBary2 = 0;
->>>>>>> 4c20231eea0b6a2f2455cf2321527f16471e701f
 		}
 		
 		[Inline]

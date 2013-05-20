@@ -12,6 +12,7 @@ package io.plugin.math.algebra
 {
 	import io.plugin.core.interfaces.ICloneable;
 	import io.plugin.core.interfaces.IEquatable;
+	import io.plugin.math.base.MathHelper;
 	
 	/**
 	 * A homogeneous representation of a quartenion in the three-dimensional space using the Cartesian coordinates x, y, and z.
@@ -330,19 +331,19 @@ package io.plugin.math.algebra
 			return this;
 		}
 		
-		[Inline]
-		private final function sign( value: Number ): Number
+		/*
+		private static function sign( value: Number ): Number
 		{
 			return( value > 0 ? 1 : -1 );
 		}
-		
+		*/
 		[Inline]
 		private final function norm( a: Number, b: Number, c: Number, d: Number ): Number
 		{
 			return Math.sqrt( a * a + b * b + c * c + d * d);
 		}
 		
-		public function fromRotationMatrix( rot: HMatrix ): void
+		public static function fromRotationMatrix( rot: HMatrix ): HQuaternion
 		{
 			// TODO serious test this stuff + pointer optimizations
 			var q0: Number = ( rot.m00 + rot.m11 + rot.m22 + 1 ) / 4;
@@ -374,38 +375,35 @@ package io.plugin.math.algebra
 			
 			if ( q0 >= q1 && q0 >= q2 && q0 >= q3 )
 			{
-				q1 *= sign( rot.m21 - rot.m12 );
-				q2 *= sign( rot.m02 - rot.m20 );
-				q3 *= sign( rot.m10 - rot.m01 );
+				q1 *= MathHelper.sign( rot.m21 - rot.m12 );
+				q2 *= MathHelper.sign( rot.m02 - rot.m20 );
+				q3 *= MathHelper.sign( rot.m10 - rot.m01 );
 			}
 			else if( q1 >= q0 && q1 >= q2 && q1 >= q3 )
 			{
-				q0 *= sign( rot.m21 - rot.m12 );
-				q2 *= sign( rot.m10 + rot.m01 );
-				q3 *= sign( rot.m02 + rot.m20 );
+				q0 *= MathHelper.sign( rot.m21 - rot.m12 );
+				q2 *= MathHelper.sign( rot.m10 + rot.m01 );
+				q3 *= MathHelper.sign( rot.m02 + rot.m20 );
 			}
 			else if ( q2 >= q0 && q2 >= q1 && q2 >= q3 )
 			{
-				q0 *= sign( rot.m02 - rot.m20 );
-				q1 *= sign( rot.m10 + rot.m01 );
-				q3 *= sign( rot.m21 + rot.m12 );
+				q0 *= MathHelper.sign( rot.m02 - rot.m20 );
+				q1 *= MathHelper.sign( rot.m10 + rot.m01 );
+				q3 *= MathHelper.sign( rot.m21 + rot.m12 );
 			}
 			else if ( q3 >= q0 && q3 >= q1 && q3 >= q2 )
 			{
-				q0 *= sign( rot.m10 - rot.m01 );
-				q1 *= sign( rot.m20 + rot.m02 );
-				q2 *= sign( rot.m21 + rot.m12 );
+				q0 *= MathHelper.sign( rot.m10 - rot.m01 );
+				q1 *= MathHelper.sign( rot.m20 + rot.m02 );
+				q2 *= MathHelper.sign( rot.m21 + rot.m12 );
 			}
 			else
 			{
 				throw new Error( "Invalid value." );
 			}
-			var r: Number = norm( q0, q1, q2, q3 );
+			var r: Number = Math.sqrt( q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3)
 			
-			w = q0 /= r;
-			x = q1 /= r;
-			y = q2 /= r;
-			z = q3 /= r;
+			return new HQuaternion( q0 /= r, q1 /= r, q2 /= r, q3 /= r );
 		}
 		
 		/**
