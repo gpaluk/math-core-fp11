@@ -32,7 +32,7 @@ package io.plugin.math.algebra
 		public var angle: Number;
 		
 		/**
-		 * Disposed flag set to <code>true</code> once the <code>dispo
+		 * Disposed flag set to <code>true</code> once the object has been <code>disposed.</code>
 		 */
 		protected var mIsDisposed: Boolean;
 		

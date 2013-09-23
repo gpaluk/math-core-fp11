@@ -47,7 +47,7 @@ package io.plugin.math.algebra
 		 * @param	x	The x component.
 		 * @param	y	The y component.
 		 * @param	z	The z component.
-		 * @param	w	The z component.
+		 * @param	w	The w component.
 		 */
 		public function HPoint( x: Number = 0, y: Number = 0, z: Number = 0, w: Number = 0 ) 
 		{
