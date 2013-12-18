@@ -1118,7 +1118,6 @@ package io.plugin.math.algebra
 			m31 = 0;
 			m32 = 0;
 			m33 = 1;
-			
 		}
 		
 		/**
