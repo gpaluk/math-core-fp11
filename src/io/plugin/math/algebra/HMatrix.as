@@ -248,6 +248,14 @@ package io.plugin.math.algebra
 					 m30, m31, m32, m33 ];
 		}
 		
+		public function toTuple2D():Array
+		{
+			return [[ m00, m01, m02, m03 ],
+					[ m10, m11, m12, m13 ],
+					[ m20, m21, m22, m23 ],
+					[ m30, m31, m32, m33 ]];
+		}
+		
 		/**
 		 * Creates a new <code>HMatrix</code> Object by the x, y, and z properties of an <code>AVector</code> Object.
 		 * 
@@ -480,10 +488,10 @@ package io.plugin.math.algebra
 		 */
 		public function scale( scaler: Number ): HMatrix
 		{
-			return new HMatrix( m00 *= scaler,		m01 *= scaler,		m02 *= scaler,		m03 *= scaler,
-								m10 *= scaler,		m11 *= scaler,		m12 *= scaler,		m13 *= scaler,
-								m20 *= scaler,		m21 *= scaler,		m22 *= scaler,		m23 *= scaler,
-								m30 *= scaler,		m31 *= scaler,		m32 *= scaler,		m33 *= scaler );
+			return new HMatrix( m00 * scaler,		m01 * scaler,		m02 * scaler,		m03 * scaler,
+								m10 * scaler,		m11 * scaler,		m12 * scaler,		m13 * scaler,
+								m20 * scaler,		m21 * scaler,		m22 * scaler,		m23 * scaler,
+								m30 * scaler,		m31 * scaler,		m32 * scaler,		m33 * scaler );
 		}
 		
 		/**
@@ -561,9 +569,9 @@ package io.plugin.math.algebra
 		 */
 		public function multiplyAVector( v: AVector ): AVector
 		{
-			return new AVector( v.x * m00 + v.y * m01 + v.z * m02 + m03,
-								v.x * m10 + v.y * m11 + v.z * m12 + m13,
-								v.x * m20 + v.y * m21 + v.z * m22 + m23 );
+			return new AVector( v.x * m00 + v.y * m01 + v.z * m02,
+								v.x * m10 + v.y * m11 + v.z * m12,
+								v.x * m20 + v.y * m21 + v.z * m22 );
 		}
 		
 		/**
@@ -574,10 +582,10 @@ package io.plugin.math.algebra
 		 */
 		public function multiplyHPoint( p: HPoint ): HPoint
 		{
-			return new HPoint( p.x * m00 + p.y * m01 + p.z * m02 + m03,
-							   p.x * m10 + p.y * m11 + p.z * m12 + m13,
-							   p.x * m20 + p.y * m21 + p.z * m22 + m23,
-							   p.x * m30 + p.y * m31 + p.z * m32 + m33 );
+			return new HPoint( p.x * m00 + p.y * m01 + p.z * m02 + p.w * m03,
+							   p.x * m10 + p.y * m11 + p.z * m12 + p.w * m13,
+							   p.x * m20 + p.y * m21 + p.z * m22 + p.w * m23,
+							   p.x * m30 + p.y * m31 + p.z * m32 + p.w * m33 );
 		}
 		
 		/**
@@ -1145,6 +1153,111 @@ package io.plugin.math.algebra
 				break;
 				default:
 					throw new Error( "Invalid column." );
+				break;
+			}
+		}
+		
+		public function setColumn( column: int, data:Array ): void
+		{
+			if ( data.length != 4 )
+			{
+				throw new Error( "Invalid length." );
+			}
+			switch( column )
+			{
+				case 0:
+					m00 = data[0];
+					m10 = data[1], 
+					m20 = data[2], 
+					m30 = data[3];
+				break;
+				case 1:
+					m01 = data[0];
+					m11 = data[1], 
+					m21 = data[2], 
+					m31 = data[3];
+				break;
+				case 2:
+					m02 = data[0];
+					m12 = data[1], 
+					m22 = data[2], 
+					m32 = data[3];
+				break;
+				case 3:
+					m03 = data[0];
+					m13 = data[1], 
+					m23 = data[2], 
+					m33 = data[3];
+				break;
+				default:
+					throw new Error( "Invalid column." );
+				break;
+			}
+		}
+		
+		/**
+		 * Get a row from the <code>HMatrix</code> Object. Row values are 0, 1, 2 and 3.
+		 * 
+		 * @param	row	The row number of the <code>HMatrix</code> Object.
+		 * 
+		 * @return	The 4 element values associated with the row as an <code>Array</code>
+		 */
+		public function getRow( row: int ): Array
+		{
+			switch( row )
+			{
+				case 0:
+					return [ m00, m01, m02, m03 ];
+				break;
+				case 1:
+					return [ m10, m11, m12, m13 ];
+				break;
+				case 2:
+					return [ m20, m21, m22, m23 ];
+				break;
+				case 3:
+					return [ m30, m31, m32, m33 ];
+				break;
+				default:
+					throw new Error( "Invalid row." );
+				break;
+			}
+		}
+		
+		public function setRow( row: int, data:Array ): void
+		{
+			if ( data.length != 4 )
+			{
+				throw new Error( "Invalid length." );
+			}
+			switch( row )
+			{
+				case 0:
+					m00 = data[0];
+					m01 = data[1], 
+					m02 = data[2], 
+					m03 = data[3];
+				break;
+				case 1:
+					m10 = data[0];
+					m11 = data[1], 
+					m12 = data[2], 
+					m13 = data[3];
+				break;
+				case 2:
+					m20 = data[0];
+					m21 = data[1], 
+					m22 = data[2], 
+					m23 = data[3];
+				break;
+				case 3:
+					m30 = data[0];
+					m31 = data[1], 
+					m32 = data[2], 
+					m33 = data[3];
+				break;
+				default:
+					throw new Error( "Invalid row." );
 				break;
 			}
 		}
