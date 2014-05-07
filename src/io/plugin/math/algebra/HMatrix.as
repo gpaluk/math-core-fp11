@@ -105,7 +105,7 @@ package io.plugin.math.algebra
 		/**
 		 * A flag representing if this object has been disposed. True if the <code>dispose()</code> method has been called.
 		 */
-		protected var mIsDisposed: Boolean = false;
+		protected var _isDisposed: Boolean = false;
 		
 		/**
 		 * Creates and returns a zero filled matrix object where all 16 values are 0.
@@ -164,14 +164,17 @@ package io.plugin.math.algebra
 			this.m30 = m30;		this.m31 = m31;		this.m32 = m32;		this.m33 = m33;
 		}
 		
-		
-		/**
-		 * Disposes of this objects and frees the object ready for garbage collection.
-		 */
-		public function dispose(): void
+		public function dispose():void
 		{
 			
-			mIsDisposed = true;
+		}
+		
+		/**
+		 * Gets a <code>Boolean</code> indicating if the <code>dispose()</code> method has been called and subsequently sets the isDisposed property to <code>true</code>.
+		 */
+		public function get isDisposed(): Boolean
+		{
+			return _isDisposed;
 		}
 		
 		/**
@@ -213,15 +216,6 @@ package io.plugin.math.algebra
 		public static function fromAxisAngle( axis: AVector, angle: Number ): HMatrix
 		{
 			return new HMatrix().rotation( axis, angle );
-		}
-		
-		
-		/**
-		 * Gets a <code>Boolean</code> indicating if the <code>dispose()</code> method has been called and subsequently sets the isDisposed property to <code>true</code>.
-		 */
-		public function get isDisposed(): Boolean
-		{
-			return mIsDisposed;
 		}
 		
 		/**

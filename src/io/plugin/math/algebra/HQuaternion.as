@@ -11,6 +11,7 @@
 package io.plugin.math.algebra 
 {
 	import io.plugin.core.interfaces.ICloneable;
+	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.core.interfaces.IEquatable;
 	import io.plugin.math.base.MathHelper;
 	
@@ -19,7 +20,7 @@ package io.plugin.math.algebra
 	 * 
 	 * @author Gary Paluk
 	 */
-	public class HQuaternion implements IEquatable, ICloneable
+	public class HQuaternion implements IDisposable, IEquatable, ICloneable
 	{
 		
 		/**
@@ -41,6 +42,8 @@ package io.plugin.math.algebra
 		 * The fourth element of an <code>HQuaternion</code> Object, such as the <code>z</code> coordinate of a point in the three-dimensional space.
 		 */
 		public var z: Number;
+		
+		private var _isDisposed:Boolean;
 		
 		/**
 		 * Performs an equality check between this <code>HQuaternion</code> and another <code>HQuaternion</code> object.
@@ -75,6 +78,14 @@ package io.plugin.math.algebra
 		}
 		
 		/**
+		 * Returns true if the object has been disposed, otherwise false.
+		 */
+		public function get isDisposed():Boolean 
+		{
+			return _isDisposed;
+		}
+		
+		/**
 		 * A temporary <code>HQuaternion</code> Object, used during computations where alaising may occur.
 		 */
 		private static const TEMP: HQuaternion = new HQuaternion();
@@ -94,6 +105,14 @@ package io.plugin.math.algebra
 			this.x = x;
 			this.y = y;
 			this.z = z;
+		}
+		
+		/**
+		 * Disposes of this object and makes it available for garbage collection.
+		 */
+		public function dispose():void
+		{
+			_isDisposed = true;
 		}
 		
 		/**

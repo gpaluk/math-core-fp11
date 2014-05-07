@@ -34,7 +34,7 @@ package io.plugin.math.algebra
 		/**
 		 * Disposed flag set to <code>true</code> once the object has been <code>disposed.</code>
 		 */
-		protected var mIsDisposed: Boolean;
+		protected var _isDisposed: Boolean;
 		
 		/**
 		 * Representation of an axis with an angle. If no angle is defined, a default of 0 is used.
@@ -47,7 +47,23 @@ package io.plugin.math.algebra
 			this.axis = axis;
 			this.angle = angle;
 			
-			mIsDisposed = false;
+			_isDisposed = false;
+		}
+		
+		/**
+		 * Disposes of this objects and frees the object ready for garbage collection.
+		 */
+		public function dispose(): void
+		{
+			axis.dispose();
+			axis = null;
+			
+			_isDisposed = true;
+		}
+		
+		public function get isDisposed():Boolean
+		{
+			return _isDisposed;
 		}
 		
 		/**
@@ -73,17 +89,6 @@ package io.plugin.math.algebra
 				throw new Error( "An error occured in AxisAngle::equals(). Objetct type mismatch." );
 			}
 			return ( axis.equals( v.axis ) && ( angle == v.angle ) );
-		}
-		
-		/**
-		 * Disposes of this objects and frees the object ready for garbage collection.
-		 */
-		public function dispose(): void
-		{
-			axis.dispose();
-			axis = null;
-			
-			mIsDisposed = true;
 		}
 		
 	}

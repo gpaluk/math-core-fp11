@@ -41,6 +41,8 @@ package io.plugin.math.algebra
 		
 		protected var _w: Number;
 		
+		protected var _isDisposed:Boolean;
+		
 		/**
 		 * The fourth element of an <code>APoint</code> Object (in addition to the <code>x</code>, <code>y</code>, and <code>z</code> properties).
 		 * The <code>w</code> parameter is used to hold data such as the angle of rotation.
@@ -92,6 +94,7 @@ package io.plugin.math.algebra
 			this.y = y;
 			this.z = z;
 			_w = 1;
+			_isDisposed = false;
 		}
 		
 		/**
@@ -99,7 +102,12 @@ package io.plugin.math.algebra
 		 */
 		public function dispose(): void
 		{
-			
+			_isDisposed = true;
+		}
+		
+		public function get isDisposed():Boolean
+		{
+			return _isDisposed;
 		}
 		
 		/**
